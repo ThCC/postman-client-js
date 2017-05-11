@@ -1,9 +1,7 @@
-import Api from './src/api';
-import Mail from './src/models';
-import Exceptions from './src/exceptions';
+var _client = require('./dist/client');
+var _models = require('./dist/models');
+var _exceptions = require('./dist/exceptions');
 
-module.exports = {
-    Api,
-    Mail,
-    Exceptions,
-};
+exports.Client = _client.Client;
+exports.Mail = _models.Mail;
+exports.Exceptions = _exceptions.default;

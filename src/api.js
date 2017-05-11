@@ -4,6 +4,20 @@ import signature from 'apysignature';
 import querystring from 'querystring';
 import exceptions from './exceptions';
 
+const apis = {
+    text: '/api/send_mail/',
+    template: '/api/send_mail/template/',
+};
+
+function getUrl(options) {
+    const sendMethod = apis[options.endpoint];
+    const signedReq = new signature.Request(options.method, sendMethod, {});
+    const token = new signature.Token(options.apiKey, options.apiSecret);
+    token.sign(signedReq);
+    const authDict = signedReq.getAuthDict();
+    return `${options.serverUri}${sendMethod}?${querystring.stringify(authDict)}`;
+}
+
 export default class Api {
     constructor(key, secret, serverUri) {
         if (!key || typeof key !== 'string') {
@@ -19,38 +33,24 @@ export default class Api {
         }
         this.apiKey = key;
         this.apiSecret = secret;
-        this.serverUri = serverUri;
-
-        this.method = '';
-        this.endpoint = '';
-        this.apis = {
-            text: '/api/send_mail/',
-            template: '/api/send_mail/template/',
-        };
-        this.headers = {};
-    }
-    getUrl() {
-        const sendMethod = this.apis[this.endpoint];
-        const signedReq = new signature.Request(this.method, sendMethod, {});
-        const authKey = this.apiKey;
-        const authSecret = this.apiSecret;
-        const token = new signature.Token(authKey, authSecret);
-        token.sign(signedReq);
-        const authDict = signedReq.getAuthDict();
-        return `${this.serverUri}${sendMethod}?${querystring.stringify(authDict)}`;
+        this.serverUri = serverUri || 'http://postman.alterdata.com.br';
     }
     sendRequest(payload, endpoint, method, headers, timeout) {
-        this.timeout = timeout || 25;
-        this.method = method ? method.toLowerCase() : 'post';
-        this.endpoint = endpoint;
-        this.headers = headers || {};
-        const url = this.getUrl();
+        const httpMethod = method ? method.toLowerCase() : 'post';
+        const url = getUrl({
+            apiKey: this.apiKey,
+            apiSecret: this.apiSecret,
+            serverUri: this.serverUri,
+            method: httpMethod,
+            endpoint,
+        });
         const options = {
             url,
-            method: this.method.toUpperCase(),
-            headers: this.headers,
+            method: httpMethod.toUpperCase(),
+            headers: headers || {},
+            timeout: timeout || 25 * 1000,
         };
-        if (this.method === 'get') {
+        if (httpMethod === 'get') {
             options.qs = payload;
         } else {
             options.json = payload;

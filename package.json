@@ -1,6 +1,6 @@
 {
   "name": "postman-client-js",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Client service, to send simple text emails or, using a template created at Postman, send more complex emails.",
   "main": "index.js",
   "scripts": {

@@ -12,7 +12,7 @@ function trackEmail(text) {
 function isEmailInvalid(text) {
     const email = trackEmail(text);
     if (!email) return true;
-    const result = ematch(EMAIL_REGEX);
+    const result = email.match(EMAIL_REGEX);
     return result === null;
 }
 
@@ -83,7 +83,7 @@ export class Mail {
         });
     }
     getPayload(endpoint) {
-        if (!endpoint) throw new exception.NoEndpoint();
+        if (!endpoint) throw new exceptions.NoEndpoint();
         if (endpoint === 'text') {
             if (!(_.has(this, 'messageText') && this.messageText)) {
                 throw new exceptions.NoText();
@@ -103,6 +103,7 @@ export class Mail {
                 payload[_.snakeCase(key)] = this[key];
             }
         });
+        payload.sended_by = 5;
         return payload;
     }
 }

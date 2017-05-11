@@ -1,7 +1,9 @@
+# Directories and Files
 .idea/
 /tests/testsVariables.js
 /tests/simpleTest.js
-/dist/*
+dist/
+
 # Logs
 logs
 *.log
