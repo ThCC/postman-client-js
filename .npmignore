@@ -1,1 +1,4 @@
+.idea/
 src/
+/tests/testsVariables.js
+/tests/simpleTest.js
