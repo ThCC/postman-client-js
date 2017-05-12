@@ -85,6 +85,33 @@ describe('Filling With the Wrong Parameters', function () {
         }); }).should.Throw(Error);
         done();
     });
+    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateName, and therefore can't use the template subject", function (done) {
+        (function () { new _model2.Mail({
+            from: 'foo@bar.com',
+            subject: 'test',
+            recipientList: ['bar@foo.com'],
+            useTemplateSubject: true
+        }); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateName, and therefore can't use the template email", function (done) {
+        (function () { new _model2.Mail({
+            from: 'foo@bar.com',
+            subject: 'test',
+            recipientList: ['bar@foo.com'],
+            useTemplateEmail: true
+        }); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateName, and therefore can't use the template from", function (done) {
+        (function () { new _model2.Mail({
+            from: 'foo@bar.com',
+            subject: 'test',
+            recipientList: ['bar@foo.com'],
+            useTemplateFrom: true
+        }); }).should.Throw(Error);
+        done();
+    });
     it("should throw 'NoEndpoint', complaining that in order to get the payload, it should be pass the endpoint", function (done) {
         (function () {
             var mail = new _model2.Mail({

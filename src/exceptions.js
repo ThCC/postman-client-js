@@ -32,6 +32,15 @@ class NoTemplate extends ExtendableError {
     }
 }
 
+class NoTemplateNoFeatures extends ExtendableError {
+    constructor() {
+        super(
+            "Impossible to use template features, without passing 'templateName'",
+            'NoTemplateNoFeatures'
+        );
+    }
+}
+
 class NoMail extends ExtendableError {
     constructor() {
         super("Impossible to send an email if there's no mail", 'NoMail');
@@ -122,6 +131,7 @@ module.exports = {
     NoReplyEmail,
     NotMailInstance,
     InvalidServerUri,
+    NoTemplateNoFeatures,
     InvalidRecipientList,
     ParamsShouldBeObject,
 };

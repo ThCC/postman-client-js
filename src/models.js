@@ -30,14 +30,19 @@ function validadeFrom(from) {
     }
 }
 
+function attrNotInParams(params, attr) {
+    return !_.has(params, attr) || !params[attr];
+}
+
+function attrInParams(params, attr) {
+    return _.has(params, attr) && params[attr];
+}
+
 function checkParams(params) {
     if (!_.isObject(params)) {
         throw new exceptions.ParamsShouldBeObject();
     }
-    if (!(_.has(params, 'from') || _.has(params, 'useTemplateEmail'))) {
-        throw new exceptions.NoReplyEmail();
-    }
-    if (!(params.from || params.useTemplateEmail)) {
+    if (attrNotInParams(params, 'from') && attrNotInParams(params, 'useTemplateEmail')) {
         throw new exceptions.NoReplyEmail();
     }
     if (_.has(params, 'from')) validadeFrom(params.from);
@@ -46,11 +51,15 @@ function checkParams(params) {
         throw new exceptions.NoRecipient();
     }
     validateRecipients(params.recipientList);
-    if (!(_.has(params, 'subject') || _.has(params, 'useTemplateSubject'))) {
+    if (attrNotInParams(params, 'subject') && attrNotInParams(params, 'useTemplateSubject')) {
         throw new exceptions.NoSubject();
     }
     if (!(params.subject || params.useTemplateSubject)) {
         throw new exceptions.NoSubject();
+    }
+    if ((attrInParams(params, 'useTemplateSubject') || attrInParams(params, 'useTemplateFrom')
+        || attrInParams(params, 'useTemplateEmail')) && attrNotInParams(params, 'templateName')) {
+        throw new exceptions.NoTemplateNoFeatures();
     }
 }
 
