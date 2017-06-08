@@ -2,7 +2,7 @@ import _ from 'lodash';
 import request from 'request';
 import signature from 'apysignature';
 import querystring from 'querystring';
-import exceptions from './exceptions';
+import { NoPublicKey, NoSecretKey, InvalidServerUri } from './exceptions';
 
 const apis = {
     text: '/api/send_mail/',
@@ -21,14 +21,14 @@ function getUrl(options) {
 export default class Api {
     constructor(key, secret, returnRawError, serverUri) {
         if (!key || typeof key !== 'string') {
-            throw new exceptions.NoPublicKey();
+            throw new NoPublicKey();
         }
         if (!secret || typeof secret !== 'string') {
-            throw new exceptions.NoSecretKey();
+            throw new NoSecretKey();
         }
         if (serverUri) {
             if (typeof serverUri !== 'string') {
-                throw new exceptions.InvalidServerUri();
+                throw new InvalidServerUri();
             }
         }
         this.apiKey = key;

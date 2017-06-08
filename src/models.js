@@ -1,71 +1,10 @@
 import _ from 'lodash';
-import exceptions from './exceptions';
-
-const TRACK_EMAIL_REGEX = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
-const EMAIL_REGEX = /(^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$)/gi;
-
-function trackEmail(text) {
-    const tracked = text.match(TRACK_EMAIL_REGEX);
-    return tracked ? tracked[0] : null;
-}
-
-function isEmailInvalid(text) {
-    const email = trackEmail(text);
-    if (!email) return true;
-    const result = email.match(EMAIL_REGEX);
-    return result === null;
-}
-
-function validateRecipients(recipients) {
-    _.forEach(recipients, (recipient) => {
-        if (isEmailInvalid(recipient)) {
-            throw new exceptions.InvalidRecipientList();
-        }
-    });
-}
-
-function validadeFrom(from) {
-    if (isEmailInvalid(from)) {
-        throw new exceptions.InvalidFrom();
-    }
-}
-
-function attrNotInParams(params, attr) {
-    return !_.has(params, attr) || !params[attr];
-}
-
-function attrInParams(params, attr) {
-    return _.has(params, attr) && params[attr];
-}
-
-function checkParams(params) {
-    if (!_.isObject(params)) {
-        throw new exceptions.ParamsShouldBeObject();
-    }
-    if (attrNotInParams(params, 'from') && attrNotInParams(params, 'useTplDefaultEmail')) {
-        throw new exceptions.NoReplyEmail();
-    }
-    if (_.has(params, 'from')) validadeFrom(params.from);
-    if (!(_.has(params, 'recipientList') && _.isArray(params.recipientList)
-        && params.recipientList.length)) {
-        throw new exceptions.NoRecipient();
-    }
-    validateRecipients(params.recipientList);
-    if (attrNotInParams(params, 'subject') && attrNotInParams(params, 'useTplDefaultSubject')) {
-        throw new exceptions.NoSubject();
-    }
-    if (!(params.subject || params.useTplDefaultSubject)) {
-        throw new exceptions.NoSubject();
-    }
-    if ((attrInParams(params, 'useTplDefaultSubject') || attrInParams(params, 'useTplDefaultName')
-        || attrInParams(params, 'useTplDefaultEmail')) && attrNotInParams(params, 'templateSlug')) {
-        throw new exceptions.NoTemplateNoFeatures();
-    }
-}
+import Utils from './utils';
+import { NoEndpoint, NoText, NoTemplate } from './exceptions';
 
 export class Mail {
     constructor(params) {
-        checkParams(params);
+        Utils.checkParams(params);
 
         this.expectedKeys = [
             'tags',
@@ -92,17 +31,17 @@ export class Mail {
         });
     }
     getPayload(endpoint) {
-        if (!endpoint) throw new exceptions.NoEndpoint();
+        if (!endpoint) throw new NoEndpoint();
         if (endpoint === 'text') {
             if (!(_.has(this, 'messageText') && this.messageText)) {
-                throw new exceptions.NoText();
+                throw new NoText();
             }
         } else {
             if (!(_.has(this, 'templateSlug') || _.has(this, 'messageHtml'))) {
-                throw new exceptions.NoTemplate();
+                throw new NoTemplate();
             }
             if (!(this.templateSlug || this.messageHtml)) {
-                throw new exceptions.NoTemplate();
+                throw new NoTemplate();
             }
         }
 

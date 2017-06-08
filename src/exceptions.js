@@ -117,7 +117,7 @@ class ParamsShouldBeObject extends ExtendableError {
 }
 
 
-module.exports = {
+export {
     ApiError,
     NoMail,
     NoText,

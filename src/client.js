@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import Api from './api';
-import exceptions from './exceptions';
+import { NoMail, NotMailInstance } from './exceptions';
 
 function checkMail(mail) {
-    if (!mail) throw new exceptions.NoMail();
-    if (!_.isObject(mail)) throw new exceptions.NoMail();
-    if (!(mail.constructor.name === 'Mail')) throw new exceptions.NotMailInstance();
+    if (!mail) throw new NoMail();
+    if (!_.isObject(mail)) throw new NoMail();
+    if (!(mail.constructor.name === 'Mail')) throw new NotMailInstance();
 }
 
 export class Client extends Api {

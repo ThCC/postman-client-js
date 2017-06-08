@@ -13,6 +13,10 @@ var should = chai.should();
 
 var _model2 = _interopRequireDefault(_model);
 
+var _exceptions = require('../dist/exceptions');
+
+var _exceptions2 = _interopRequireDefault(_exceptions);
+
 describe('Filling With the Wrong Parameters', function () {
     // should.Throw has a bug in compararing exceptions.
     it("should throw 'ParamsShouldBeObject', complaining that it's not an object", function (done) {
