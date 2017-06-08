@@ -19,7 +19,7 @@ function getUrl(options) {
 }
 
 export default class Api {
-    constructor(key, secret, serverUri) {
+    constructor(key, secret, returnRawError, serverUri) {
         if (!key || typeof key !== 'string') {
             throw new exceptions.NoPublicKey();
         }
@@ -33,6 +33,7 @@ export default class Api {
         }
         this.apiKey = key;
         this.apiSecret = secret;
+        this.returnRawError = returnRawError || false;
         this.serverUri = serverUri || 'http://postman.alterdata.com.br';
     }
     sendRequest(payload, endpoint, method, headers, timeout) {
@@ -64,7 +65,11 @@ export default class Api {
                     if (!err) {
                         err = { Error: _.isString(body) ? body : body.error };
                     }
-                    reject(err);
+                    if (this.returnRawError) {
+                        reject({ error, body });
+                    } else {
+                        reject(err);
+                    }
                 }
             });
         });

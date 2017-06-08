@@ -26,7 +26,7 @@ class NoTemplate extends ExtendableError {
     constructor() {
         super(
             'Impossible to send a template email without a html content. ' +
-            'Either you pass the templateName or the messageHtml',
+            'Either you pass the templateSlug or the messageHtml',
             'NoTemplate'
         );
     }
@@ -35,7 +35,7 @@ class NoTemplate extends ExtendableError {
 class NoTemplateNoFeatures extends ExtendableError {
     constructor() {
         super(
-            "Impossible to use template features, without passing 'templateName'",
+            "Impossible to use template features, without passing 'templateSlug'",
             'NoTemplateNoFeatures'
         );
     }

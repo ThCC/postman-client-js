@@ -42,7 +42,7 @@ function checkParams(params) {
     if (!_.isObject(params)) {
         throw new exceptions.ParamsShouldBeObject();
     }
-    if (attrNotInParams(params, 'from') && attrNotInParams(params, 'useTemplateEmail')) {
+    if (attrNotInParams(params, 'from') && attrNotInParams(params, 'useTplDefaultEmail')) {
         throw new exceptions.NoReplyEmail();
     }
     if (_.has(params, 'from')) validadeFrom(params.from);
@@ -51,14 +51,14 @@ function checkParams(params) {
         throw new exceptions.NoRecipient();
     }
     validateRecipients(params.recipientList);
-    if (attrNotInParams(params, 'subject') && attrNotInParams(params, 'useTemplateSubject')) {
+    if (attrNotInParams(params, 'subject') && attrNotInParams(params, 'useTplDefaultSubject')) {
         throw new exceptions.NoSubject();
     }
-    if (!(params.subject || params.useTemplateSubject)) {
+    if (!(params.subject || params.useTplDefaultSubject)) {
         throw new exceptions.NoSubject();
     }
-    if ((attrInParams(params, 'useTemplateSubject') || attrInParams(params, 'useTemplateFrom')
-        || attrInParams(params, 'useTemplateEmail')) && attrNotInParams(params, 'templateName')) {
+    if ((attrInParams(params, 'useTplDefaultSubject') || attrInParams(params, 'useTplDefaultName')
+        || attrInParams(params, 'useTplDefaultEmail')) && attrNotInParams(params, 'templateSlug')) {
         throw new exceptions.NoTemplateNoFeatures();
     }
 }
@@ -78,10 +78,10 @@ export class Mail {
             'getTextFromHtml',
             'headers',
             'context',
-            'templateName',
-            'useTemplateFrom',
-            'useTemplateEmail',
-            'useTemplateSubject',
+            'templateSlug',
+            'useTplDefaultName',
+            'useTplDefaultEmail',
+            'useTplDefaultSubject',
             'contextPerRecipient',
         ];
         const keys = _.keys(params);
@@ -98,10 +98,10 @@ export class Mail {
                 throw new exceptions.NoText();
             }
         } else {
-            if (!(_.has(this, 'templateName') || _.has(this, 'messageHtml'))) {
+            if (!(_.has(this, 'templateSlug') || _.has(this, 'messageHtml'))) {
                 throw new exceptions.NoTemplate();
             }
-            if (!(this.templateName || this.messageHtml)) {
+            if (!(this.templateSlug || this.messageHtml)) {
                 throw new exceptions.NoTemplate();
             }
         }

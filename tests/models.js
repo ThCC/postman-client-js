@@ -27,8 +27,8 @@ describe('Filling With the Wrong Parameters', function () {
         (function () { new _model2.Mail({from: ''}); }).should.Throw(Error);
         done();
     });
-    it("should throw 'NoReplyEmail', still complaining that there's no reply email, even if passed useTemplateEmail has false", function (done) {
-        (function () { new _model2.Mail({useTemplateEmail: false}); }).should.Throw(Error);
+    it("should throw 'NoReplyEmail', still complaining that there's no reply email, even if passed useTplDefaultEmail has false", function (done) {
+        (function () { new _model2.Mail({useTplDefaultEmail: false}); }).should.Throw(Error);
         done();
     });
     it("should throw 'InvalidFrom', complaining that the reply email is invalid", function (done) {
@@ -77,38 +77,38 @@ describe('Filling With the Wrong Parameters', function () {
         }); }).should.Throw(Error);
         done();
     });
-    it("should throw 'NoSubject', still complaining that there's no subject, even if passed useTemplateSubject has false", function (done) {
+    it("should throw 'NoSubject', still complaining that there's no subject, even if passed useTplDefaultSubject has false", function (done) {
         (function () { new _model2.Mail({
             from: 'foo@bar.com',
             recipientList: ['bar@foo.com'],
-            useTemplateSubject: false
+            useTplDefaultSubject: false
         }); }).should.Throw(Error);
         done();
     });
-    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateName, and therefore can't use the template subject", function (done) {
+    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateSlug, and therefore can't use the template subject", function (done) {
         (function () { new _model2.Mail({
             from: 'foo@bar.com',
             subject: 'test',
             recipientList: ['bar@foo.com'],
-            useTemplateSubject: true
+            useTplDefaultSubject: true
         }); }).should.Throw(Error);
         done();
     });
-    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateName, and therefore can't use the template email", function (done) {
+    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateSlug, and therefore can't use the template email", function (done) {
         (function () { new _model2.Mail({
             from: 'foo@bar.com',
             subject: 'test',
             recipientList: ['bar@foo.com'],
-            useTemplateEmail: true
+            useTplDefaultEmail: true
         }); }).should.Throw(Error);
         done();
     });
-    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateName, and therefore can't use the template from", function (done) {
+    it("should throw 'NoTemplateNoFeatures', complaining that there's no templateSlug, and therefore can't use the template from", function (done) {
         (function () { new _model2.Mail({
             from: 'foo@bar.com',
             subject: 'test',
             recipientList: ['bar@foo.com'],
-            useTemplateFrom: true
+            useTplDefaultName: true
         }); }).should.Throw(Error);
         done();
     });
@@ -146,7 +146,7 @@ describe('Filling With the Wrong Parameters', function () {
         }).should.Throw(Error);
         done();
     });
-    it("should throw 'templateName', complaining that there's no templateName", function (done) {
+    it("should throw 'templateSlug', complaining that there's no templateSlug", function (done) {
         (function () {
             var mail = new _model2.Mail({
                 from: 'foo@bar.com',
@@ -157,19 +157,19 @@ describe('Filling With the Wrong Parameters', function () {
         }).should.Throw(Error);
         done();
     });
-    it("should throw 'templateName', still complaining that there's no templateName, even if passed an empty string", function (done) {
+    it("should throw 'templateSlug', still complaining that there's no templateSlug, even if passed an empty string", function (done) {
         (function () {
             var mail = new _model2.Mail({
                 from: 'foo@bar.com',
                 recipientList: ['bar@foo.com'],
                 subject: 'test',
-                templateName: ''
+                templateSlug: ''
             });
             mail.getPayload('template');
         }).should.Throw(Error);
         done();
     });
-    it("should throw 'templateName', still complaining that there's no templateName, even if passed messageHtml has an empty string", function (done) {
+    it("should throw 'templateSlug', still complaining that there's no templateSlug, even if passed messageHtml has an empty string", function (done) {
         (function () {
             var mail = new _model2.Mail({
                 from: 'foo@bar.com',
