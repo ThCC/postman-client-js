@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Api from './api';
-import { NoMail, NotMailInstance } from './exceptions';
+import { NoMail, NotMailInstance, NoSearchArgs, NoSearchArgsInstance, NoParamX } from './exceptions';
 
 function checkMail(mail) {
     if (!mail) throw new NoMail();
@@ -18,5 +18,18 @@ export class Client extends Api {
         checkMail(mail);
         const endpoint = 'template';
         return this.sendRequest(mail.getPayload(endpoint), endpoint);
+    }
+    searchEmails(searchArgs) {
+        if (!searchArgs) throw new NoSearchArgs();
+        if (!(searchArgs.constructor.name === 'SearchArgs')) throw new NoSearchArgsInstance();
+
+        return this.sendRequest(searchArgs.getPayload(), 'search', 'GET');
+    }
+    getSpecificEmails(uuids) {
+        if (!uuids) throw new NoParamX('uuids');
+        let specifics = uuids;
+        if (!_.isArray(specifics)) specifics = [specifics];
+        specifics = JSON.stringify(specifics);
+        return this.sendRequest({ uuids: specifics }, 'specifics', 'GET');
     }
 }

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 class ExtendableError extends Error {
     constructor(message, name) {
         super(message);
@@ -95,6 +97,33 @@ class NoReplyEmail extends ExtendableError {
     }
 }
 
+class NoSearchArgs extends ExtendableError {
+    constructor(paramName) {
+        super('Impossible to get emails without search arguments', 'NoSearchArgs');
+    }
+}
+
+class NoSearchArgsInstance extends ExtendableError {
+    constructor(paramName) {
+        super('Expecting a SearchArgs instance', 'NoSearchArgsInstance');
+    }
+}
+
+class NoParamX extends ExtendableError {
+    constructor(paramName) {
+        super(`Please provide the ${paramName}`, `NoParam${_.capitalize(paramName)}`);
+    }
+}
+
+class WrongTypeParamX extends ExtendableError {
+    constructor(dType, paramName) {
+        super(
+            `Parameter ${paramName} has to be of the type ${dType}`,
+            `WrongTypeParam${_.capitalize(paramName)}`
+        );
+    }
+}
+
 class InvalidRecipientList extends ExtendableError {
     constructor() {
         super(
@@ -121,6 +150,7 @@ export {
     ApiError,
     NoMail,
     NoText,
+    NoParamX,
     NoSubject,
     NoEndpoint,
     NoTemplate,
@@ -129,8 +159,11 @@ export {
     NoSecretKey,
     NoRecipient,
     NoReplyEmail,
+    NoSearchArgs,
+    WrongTypeParamX,
     NotMailInstance,
     InvalidServerUri,
+    NoSearchArgsInstance,
     NoTemplateNoFeatures,
     InvalidRecipientList,
     ParamsShouldBeObject,

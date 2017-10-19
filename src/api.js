@@ -7,6 +7,8 @@ import { NoPublicKey, NoSecretKey, InvalidServerUri } from './exceptions';
 const apis = {
     text: '/api/send_mail/',
     template: '/api/send_mail/template/',
+    search: '/api/mail/search/',
+    specifics: '/api/mail/search/specifics/',
 };
 
 function getUrl(options) {

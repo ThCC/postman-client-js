@@ -1,7 +1,6 @@
 # Directories and Files
 .idea/
-/tests/testsVariables.js
-/tests/simpleTest.js
+/tests/pratical-tests/testsVariables.js
 dist/
 
 # Logs

@@ -13,11 +13,7 @@ var should = chai.should();
 
 var _model2 = _interopRequireDefault(_model);
 
-var _exceptions = require('../dist/exceptions');
-
-var _exceptions2 = _interopRequireDefault(_exceptions);
-
-describe('Filling With the Wrong Parameters', function () {
+describe("Filling 'Mail' model with the Wrong Parameters", function () {
     // should.Throw has a bug in compararing exceptions.
     it("should throw 'ParamsShouldBeObject', complaining that it's not an object", function (done) {
         (function () { new _model2.Mail(''); }).should.Throw(Error);
@@ -183,6 +179,44 @@ describe('Filling With the Wrong Parameters', function () {
             });
             mail.getPayload('template');
         }).should.Throw(Error);
+        done();
+    });
+});
+
+describe("Filling 'SearchArgs' model with the Wrong Parameters", function () {
+    // should.Throw has a bug in compararing exceptions.
+    it("should throw 'ParamsShouldBeObject', complaining that it's not an object", function (done) {
+        (function () { new _model2.SearchArgs(''); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'NoParamStart', complaining that there's no 'start' param", function (done) {
+        (function () { new _model2.SearchArgs({}); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'NoParamEnd', complaining that there's no 'end' param", function (done) {
+        (function () { new _model2.SearchArgs({start: ''}); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'NoParamAppIds', complaining that there's no 'appIds' param", function (done) {
+        (function () { new _model2.SearchArgs({start: '', end: ''}); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'WrongTypeParamAppIds', complaining that the 'appIds' param is should be an Array, even if passed an number", function (done) {
+        (function () { new _model2.SearchArgs({
+            start: '', end: '', appIds: 123
+        }); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'WrongTypeParamAppIds', complaining that the 'appIds' param is should be an Array, even if passed an empty string", function (done) {
+        (function () { new _model2.Mail({
+            start: '', end: '', appIds: ''
+        }); }).should.Throw(Error);
+        done();
+    });
+    it("should throw 'WrongTypeParamAppIds', complaining that the 'appIds' param is should be an Array, even if passed a boolean", function (done) {
+        (function () { new _model2.Mail({
+            start: '', end: '', appIds: false
+        }); }).should.Throw(Error);
         done();
     });
 });
